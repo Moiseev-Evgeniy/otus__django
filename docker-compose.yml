@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  otus_dj_pr:
+    container_name: otus_dj_pr
+    build: .
+    ports:
+      - 8000:8000
+#    networks:
+#      - dj_psql
+    depends_on:
+      - database
+
+  database:
+    container_name: otus_postgres
+    image: postgres:14.4
+    ports:
+      - 5432:5432
+    volumes:
+      - otus_postgres_data:/var/lib/otus_postgresql/data/
+    env_file:
+      - ./otus_dj_pr/.env
+    environment:
+      PGDATA: /var/lib/otus_postgresql/data/
+#    networks:
+#      - dj_psql
+
+
+#networks:
+#  dj_psql:
+#    driver: bridge
+
+volumes:
+  otus_postgres_data:
